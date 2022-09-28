@@ -8,12 +8,18 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lcrespilho/Async-Task-Queue.git"
   },
+  "keywords": ["taskqueue"],
   "author": {
     "name": "Leonardo Lourenço Crespilho",
     "url": "https://louren.co.in"
