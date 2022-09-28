@@ -1,8 +1,14 @@
 // Async task queue
-function taskQueue(concurrency = 1) {
+export const taskQueue = (concurrency = 1) => {
   let running = 0;
-  const taskQueue: ({ task: any; resolve: any; })[] = [];
-  const runTask = ({ task, resolve }) => {
+  const taskQueue: { task: (done: () => void) => void; resolve: any }[] = [];
+  const runTask = ({
+    task,
+    resolve,
+  }: {
+    task: (done: () => void) => void;
+    resolve: any;
+  }) => {
     running++;
     task(() => {
       running--;
@@ -16,12 +22,12 @@ function taskQueue(concurrency = 1) {
       }
     });
   };
-  const enqueueTask = (task, resolve) => {
+  const enqueueTask = (task: (done: () => void) => void, resolve: any) => {
     taskQueue.push({ task, resolve });
   };
   return {
-    push: task => {
-      let resolve;
+    push: (task: (done: () => void) => void) => {
+      let resolve: any;
       const promise = new Promise(r => (resolve = r));
       running < concurrency
         ? runTask({ task, resolve })
@@ -30,5 +36,11 @@ function taskQueue(concurrency = 1) {
     },
     tasks: () => running + taskQueue.length,
   };
-}
-const TaskQueue = taskQueue(parseInt(process.env.CONCURRENCY || '1'));
+};
+
+// const TaskQueue = taskQueue(parseInt(process.env.CONCURRENCY || '1'));
+
+// TaskQueue.push((done) => {
+//   // work...
+//   done();
+// });
