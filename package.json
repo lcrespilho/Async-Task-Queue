@@ -1,6 +1,6 @@
 {
   "name": "@lcrespilho/async-task-queue",
-  "version": "1.1.1",
+  "version": "1.0.1",
   "description": "Simple Async Task Queue",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,11 +9,11 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "test": "jest",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags"
+    "prepare": "echo prepare && npm run build",
+    "prepublishOnly": "echo prepublishOnly && npm test && npm run lint",
+    "preversion": "echo preversion && npm run lint",
+    "version": "echo version && npm run format && git add -A src",
+    "postversion": "echo postversion && git push && git push --tags"
   },
   "repository": {
     "type": "git",
