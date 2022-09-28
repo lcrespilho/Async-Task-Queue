@@ -1,6 +1,6 @@
 {
   "name": "@lcrespilho/async-task-queue",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple Async Task Queue",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
