@@ -1,5 +1,5 @@
 // Async task queue
-export const taskQueue = (concurrency = 1, logOnEmpty = false) => {
+export const taskQueue = (concurrency: string | number = 1, logOnEmpty = false) => {
   let running = 0;
   const taskQueue: { task: (done: () => void) => void; resolve: any }[] = [];
   const runTask = ({ task, resolve }: { task: (done: () => void) => void; resolve: any }) => {
@@ -29,10 +29,3 @@ export const taskQueue = (concurrency = 1, logOnEmpty = false) => {
     tasks: () => running + taskQueue.length,
   };
 };
-
-// const TaskQueue = taskQueue(parseInt(process.env.CONCURRENCY || '1', true));
-
-// TaskQueue.push((done) => {
-//   // work...
-//   done();
-// });
