@@ -1,14 +1,8 @@
 // Async task queue
-export const taskQueue = (concurrency = 1) => {
+export const taskQueue = (concurrency = 1, logOnEmpty = false) => {
   let running = 0;
   const taskQueue: { task: (done: () => void) => void; resolve: any }[] = [];
-  const runTask = ({
-    task,
-    resolve,
-  }: {
-    task: (done: () => void) => void;
-    resolve: any;
-  }) => {
+  const runTask = ({ task, resolve }: { task: (done: () => void) => void; resolve: any }) => {
     running++;
     task(() => {
       running--;
@@ -16,7 +10,7 @@ export const taskQueue = (concurrency = 1) => {
       if (taskQueue.length > 0) {
         runTask(taskQueue.shift()!);
       } else {
-        if (running === 0) {
+        if (running === 0 && logOnEmpty) {
           console.log('Task queue is empty');
         }
       }
@@ -28,17 +22,15 @@ export const taskQueue = (concurrency = 1) => {
   return {
     push: (task: (done: () => void) => void) => {
       let resolve: any;
-      const promise = new Promise(r => (resolve = r));
-      running < concurrency
-        ? runTask({ task, resolve })
-        : enqueueTask(task, resolve);
+      const promise = new Promise((r) => (resolve = r));
+      running < concurrency ? runTask({ task, resolve }) : enqueueTask(task, resolve);
       return promise;
     },
     tasks: () => running + taskQueue.length,
   };
 };
 
-// const TaskQueue = taskQueue(parseInt(process.env.CONCURRENCY || '1'));
+// const TaskQueue = taskQueue(parseInt(process.env.CONCURRENCY || '1', true));
 
 // TaskQueue.push((done) => {
 //   // work...
