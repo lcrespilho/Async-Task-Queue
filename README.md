@@ -20,17 +20,17 @@ const TaskQueue = taskQueue(process.env.CONCURRENCY || 2);
 (async () => {
   const t1 = TaskQueue.push(done => {
     // do sync work...
-    done(); // notifies that the task is completed
+    done(/*promise return value*/); // notifies that the task is completed
   });
 
   const t2 = TaskQueue.push(async done => {
     // do sync/async work...
-    done(); // notifies that the task is completed
+    done(/*promise return value*/); // notifies that the task is completed
   });
 
   const t3 = TaskQueue.push(async done => {
     // do sync/async work...
-    done(); // notifies that the task is completed
+    done(/*promise return value*/); // notifies that the task is completed
   });
 
   await Promise.all([t1, t2, t3]);
@@ -43,7 +43,7 @@ const TaskQueue = taskQueue(process.env.CONCURRENCY || 2);
 
 ```ts
 export declare const taskQueue: (concurrency?: string | number, logOnEmpty?: boolean) => {
-    push: (task: (done: () => void) => void) => Promise<unknown>;
+    push: (task: (done: (result?: any) => void) => void) => Promise<unknown>;
     tasks: () => number;
 };
 ```
